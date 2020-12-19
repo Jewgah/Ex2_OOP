@@ -43,7 +43,7 @@ public class CL_Pokemon {
 		}
 		return ans;
 	}
-	public String toString() {return "F:{ "+" v="+_value+", t="+_type+" , Target :"+targeted+" }";}
+	public String toString() {return "F:{ "+" v="+_value+", t="+_type+" , Targeted :"+targeted+", Edge: "+_edge+" }";}
 	public edge_data get_edge() {
 		return _edge;
 	}

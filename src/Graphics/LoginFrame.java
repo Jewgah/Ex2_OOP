@@ -60,13 +60,11 @@ public class LoginFrame implements Runnable {
         scenar.setBounds(100, 150, 150, 20);
 
         fen.getRootPane().setDefaultButton(b); //set button b as default button
-        b.requestFocus(); // set focus toi b so we can press enter to push it
+        b.requestFocus(); // set focus to button b so we can press enter to push it
 
-        b.addActionListener(this::actiongraph);
-
+        b.addActionListener(this::actiongraph); // bind this button with action listener
 
         fen.setVisible(true);
-
 
         b.addActionListener(new ActionListener(){
 
@@ -81,17 +79,14 @@ public class LoginFrame implements Runnable {
                 id.setText("ID : "+idtext);
                 scenar.setText("Scenario numéro : "+scntext);
 
-
                 setTz(Long.parseLong(idtext)); //update tz
                 setScenario(Integer.parseInt(scntext)); // update scenario number
             }
         });
-
-        // this.tz = tid.getText();
-        // this.scenario = tscn.getText(); // TODO: convert String to int
     }
+
     public void actiongraph(ActionEvent e) {
-        //DO SOMETHING
+
         Thread game = new Thread(new MyFrame(this.tz,this.scenario));
         game.start();
 
