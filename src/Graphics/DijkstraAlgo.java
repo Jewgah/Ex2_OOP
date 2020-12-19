@@ -157,10 +157,13 @@ public class MyFrame implements Runnable{
                 double v = cl_agent.getValue();
 
                 if (dest == -1) {
+                    wichBest(agent,pokeList,gg);
+
                     dest = nextNode(gg, cl_agent,pokeList);
                     game.chooseNextEdge(cl_agent.getID(), dest);
 
                     System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + dest+" i= "+i);
+                    wichBest(agent,pokeList,gg);
 
                 }
             }
@@ -197,6 +200,8 @@ public class MyFrame implements Runnable{
         geo_location dest = g.getNode(d).getLocation();
         return isOnEdge(p,src,dest);
     }
+
+
     private static boolean isOnEdge(geo_location p, edge_data e, int type, directed_weighted_graph g) {
         int src = g.getNode(e.getSrc()).getKey();
         int dest = g.getNode(e.getDest()).getKey();
@@ -216,22 +221,36 @@ public class MyFrame implements Runnable{
     private static int nextNode(directed_weighted_graph g, CL_Agent agent,List<CL_Pokemon> pokeList) {
 
 
-        System.out.println("Ratio de mon Pokemon "+ratioPokemon(agent.get_curr_fruit(),agent,g));
+     //   System.out.println("Ratio de mon Pokemon "+ratioPokemon(agent.get_curr_fruit(),agent,g));
 
         dw_graph_algorithms algo_g = new DWGraph_Algo();
         algo_g.init(g);
 
-        System.out.println("Le meilleur Pokemon est pour moi = "+agent.get_curr_fruit().get_edge());
+//        System.out.println("Le meilleur Pokemon est pour moi = "+agent.get_curr_fruit().get_edge());
 
         for (CL_Pokemon pokemon:pokeList
              ) {
-            System.out.println(pokemon);
+            System.out.println(pokemon.get_edge()+", Type :"+pokemon.getType());
         }
+
+
+
+        //wichBest(agent,pokeList,g);
+//        if (!pokeList.isEmpty()) {
+//            agent.set_curr_fruit(pokeList.get(0));
+//        }
+//        agent.get_curr_fruit().setTargeted(true);
+        wichBest(agent,pokeList,g);
+        System.out.println(agent.get_curr_fruit());
 
         int[] arr_help = fromListToInt(algo_g.shortestPath(agent.getSrcNode(), agent.get_curr_fruit().get_edge().getDest()));
 
-        if (arr_help.length==0)
-        {
+//        if (algo_g.shortestPath(agent.getSrcNode(), agent.get_curr_fruit().get_edge().getDest())==null)
+//        {
+        wichBest(agent,pokeList,g);
+
+        if (arr_help.length==0){
+          //  wichBest(agent,pokeList,g);
             pokeList.remove(agent.get_curr_fruit());
             wichBest(agent,pokeList,g);
         }
@@ -242,23 +261,27 @@ public class MyFrame implements Runnable{
 
             System.out.println();
 
+
             for (Integer k : arr_path) {
                 System.out.print(k + ",");
             }
         System.out.println("]");
             System.out.println();
 
-        wichBest(agent,pokeList,g);
-        int myKey =0;
+       // wichBest(agent,pokeList,g);
+        int myKey;
+
 
         if (agent.getSrcNode()!=agent.get_curr_fruit().get_edge().getDest()) {
              myKey = arr_path[0];
         }
+
         else {
              myKey =agent.get_curr_fruit().get_edge().getSrc();
         }
 
-        wichBest(agent,pokeList,g);
+
+     //   wichBest(agent,pokeList,g);
 
 
             return myKey;
@@ -317,14 +340,11 @@ public class MyFrame implements Runnable{
                     //If the distance from my agent to my pokemon is bigger than my current pokemon.
                     if (!pokemon.isTargeted()&& ratioPokemon(agent.get_curr_fruit(),agent,g) >ratioPokemon(pokemon,agent,g)) {
                         //my current pokemon become the pokemon of my agent.
-                        //System.out.println("Coucou").
-                         agent.get_curr_fruit().setTargeted(false);
-                        agent.set_curr_fruit(pokemon);
+                        agent.get_curr_fruit().setTargeted(false);
 
+                        agent.set_curr_fruit(pokemon);
                         //Set Pokemon to Targeted.
                         pokemon.setTargeted(true);
-
-                        //TODO : If Pokemon is eaten remove it from the PokeList
 
                     }
 
