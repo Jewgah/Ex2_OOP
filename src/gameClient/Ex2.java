@@ -16,6 +16,7 @@ import java.util.*;
 
 public class Ex2 {
 
+
     private static int id;
     private static int scenario;
 

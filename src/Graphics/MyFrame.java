@@ -22,7 +22,6 @@ public class MyFrame implements Runnable{
     private static long tz;
     private static int scenario;
 
-
     public MyFrame(long tz, int scenario){
         this.tz = tz;
         this.scenario = scenario;
@@ -46,15 +45,15 @@ public class MyFrame implements Runnable{
         init(game);
 
         game.startGame();
-        _win.setTitle("POKEMON GAME by JORDAN PEREZ & NATHANAEL BENICHOU | Tz: "+tz+" | Scenario number: "+scenario+" | ");
-
-
+        _win.setTitle("POKEMON GAME by JORDAN PEREZ & NATHANAEL BENICHOU | Tz: "+tz+" | Scenario number: "+scenario+" ");
         int ind=0;
-        long dt=150;
+        long dt=100;
+
 
 
         while(game.isRunning()) {
-            moveAgents(game, gg);
+           moveAgents(game, gg);
+
             try {
                 if(ind%1==0) {_win.repaint();}
                 Thread.sleep(dt);
@@ -63,8 +62,7 @@ public class MyFrame implements Runnable{
             catch(Exception e) {
                 e.printStackTrace();
             }
-        }
-
+      }
         String res = game.toString();
 
         System.out.println(res);
@@ -105,27 +103,29 @@ public class MyFrame implements Runnable{
             pokemon.setTargeted(false);
         }
 
-            //Pass over the agent list
-            for (CL_Agent agent : agentList) {
+        //Pass over the agent list
+        for (CL_Agent agent : agentList) {
 
-                //Pass over the Pokemon list
-                for (CL_Pokemon pokemon : pokeList) {
+            //Pass over the Pokemon list
+            for (CL_Pokemon pokemon : pokeList) {
 
-                        //Initialise the node to go
-                        NodeData nodeToGo = new NodeData(pokemon.get_edge().getDest());
+                //Initialise the node to go
+                NodeData nodeToGo = new NodeData(pokemon.get_edge().getDest());
 
-                        //Set the distance of my current agent to my current pokemon
-                         double shortestpath = algo_g.shortestPathDist(agent.getSrcNode(), nodeToGo.getKey());
+                //Set the distance of my current agent to my current pokemon
+                double shortestpath = algo_g.shortestPathDist(agent.getSrcNode(), nodeToGo.getKey());
 
-                         //if there is no minimum distance registered from this pokemon to any agent OR
-                     //if there is a bigger distance registered then keep the smallest
-                         if(pokemon.getDistFromAgent() != -1 || pokemon.getDistFromAgent() > shortestpath){
-                            pokemon.setDistFromAgent(shortestpath);
-                         }
+                //if there is no minimum distance registered from this pokemon to any agent OR
+                //if there is a bigger distance registered then keep the smallest
+                if(pokemon.getDistFromAgent() != -1 || pokemon.getDistFromAgent() > shortestpath){
+                    pokemon.setDistFromAgent(shortestpath);
                 }
+            }
 
                 wichBest(agent,pokeList,gg);
 
+
+          //  }
 
             for (int i = 0; i < agentList.size(); i++) {
                 CL_Agent cl_agent = agentList.get(i);
@@ -173,14 +173,7 @@ public class MyFrame implements Runnable{
             }
         }
     }
-    private static boolean isOnEdge(geo_location p, geo_location src, geo_location dest ) {
 
-        boolean ans = false;
-        double dist = src.distance(dest);
-        double d1 = src.distance(p) + p.distance(dest);
-        if(dist>d1-EPS2) {ans = true;}
-        return ans;
-    }
     private static boolean isOnEdge(geo_location p, int s, int d, directed_weighted_graph g) {
         geo_location src = g.getNode(s).getLocation();
         geo_location dest = g.getNode(d).getLocation();
@@ -204,17 +197,29 @@ public class MyFrame implements Runnable{
      */
     private static int nextNode(directed_weighted_graph g, CL_Agent agent,List<CL_Pokemon> pokeList) {
 
+
+        System.out.println("Ratio de mon Pokemon "+ratioPokemon(agent.get_curr_fruit(),agent,g));
+
         dw_graph_algorithms algo_g = new DWGraph_Algo();
         algo_g.init(g);
 
+        System.out.println("Le meilleur Pokemon est pour moi = "+agent.get_curr_fruit().get_edge());
+
+        for (CL_Pokemon pokemon:pokeList
+             ) {
+            System.out.println(pokemon);
+        }
+
         int[] arr_help = fromListToInt(algo_g.shortestPath(agent.getSrcNode(), agent.get_curr_fruit().get_edge().getDest()));
 
-        if (arr_help.length==0){pokeList.remove(agent.get_curr_fruit());
-
+        if (arr_help.length==0)
+        {
+            pokeList.remove(agent.get_curr_fruit());
             wichBest(agent,pokeList,g);
         }
 
         wichBest(agent,pokeList,g);
+
             int[] arr_path = fromListToInt(algo_g.shortestPath(agent.getSrcNode(), agent.get_curr_fruit().get_edge().getDest()));
 
             System.out.println();
@@ -225,8 +230,19 @@ public class MyFrame implements Runnable{
         System.out.println("]");
             System.out.println();
 
-            int myKey = arr_path[0];
         wichBest(agent,pokeList,g);
+        int myKey =0;
+
+        if (agent.getSrcNode()!=agent.get_curr_fruit().get_edge().getDest()) {
+             myKey = arr_path[0];
+        }
+        else {
+             myKey =agent.get_curr_fruit().get_edge().getSrc();
+        }
+
+        wichBest(agent,pokeList,g);
+
+
             return myKey;
         }
 
@@ -243,9 +259,20 @@ public class MyFrame implements Runnable{
     }
 
 
+    public static double ratioPokemon (CL_Pokemon pokemon ,CL_Agent agent, directed_weighted_graph g){
+        dw_graph_algorithms algo_g = new DWGraph_Algo();
 
+        algo_g.init(g);
+        double ratio ;
 
+        double dist = algo_g.shortestPathDist(agent.getSrcNode(),pokemon.get_edge().getDest());
 
+        double value = pokemon.getValue();
+
+        ratio = ((2*value)+dist)/3;
+
+        return ratio;
+    }
 
     private static boolean isOnGraph(CL_Pokemon pokemon) {
         if(pokemon.get_edge()!=null){
@@ -260,33 +287,32 @@ public class MyFrame implements Runnable{
         dw_graph_algorithms algo_g = new DWGraph_Algo();
         algo_g.init(g);
 
-        agent.set_curr_fruit(pokeList.get(1));
+        if (!pokeList.isEmpty()) {
+            agent.set_curr_fruit(pokeList.get(0));
+        }
+        agent.get_curr_fruit().setTargeted(true);
 
-        //initialise the current pokemon of my agent to the first pokemon
+        //Initialise the current pokemon of my agent to the first pokemon.
             //Pass all over the pokeList.
             for (CL_Pokemon pokemon : pokeList) {
-                //Checks if the pokemon is already targeted
-                    //If the distance from my agent to my pokemon is bigger than my current pokemon
-                    if (!pokemon.isTargeted() && algo_g.shortestPathDist(agent.getSrcNode(), agent.get_curr_fruit().get_edge().getDest()) > pokemon.getDistFromAgent()) {
-                        //my current pokemon become the pokemon of my agent
-                        //System.out.println("Coucou");
-                      agent.get_curr_fruit().setTargeted(false);
+                //Checks if the pokemon is already targeted.
+                    //If the distance from my agent to my pokemon is bigger than my current pokemon.
+                    if (!pokemon.isTargeted()&& ratioPokemon(agent.get_curr_fruit(),agent,g) >ratioPokemon(pokemon,agent,g)) {
+                        //my current pokemon become the pokemon of my agent.
+                        //System.out.println("Coucou").
+                         agent.get_curr_fruit().setTargeted(false);
                         agent.set_curr_fruit(pokemon);
 
-                        //Set Pokemon to Targeted
+                        //Set Pokemon to Targeted.
                         pokemon.setTargeted(true);
 
                         //TODO : If Pokemon is eaten remove it from the PokeList
 
                     }
 
-
         }
 
     }
-
-
-
 
     private void init(game_service game) {
         String g = game.getGraph();
@@ -323,6 +349,14 @@ public class MyFrame implements Runnable{
             }
         }
         catch (JSONException e) {e.printStackTrace();}
+    }
+    private static boolean isOnEdge(geo_location p, geo_location src, geo_location dest ) {
+
+        boolean ans = false;
+        double dist = src.distance(dest);
+        double d1 = src.distance(p) + p.distance(dest);
+        if(dist>d1-EPS2) {ans = true;}
+        return ans;
     }
 }
 
