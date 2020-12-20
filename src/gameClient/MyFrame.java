@@ -54,7 +54,7 @@ public class MyFrame extends JFrame{
 		int w = this.getWidth();
 		int h = this.getHeight();
 		g.clearRect(0, 0, w, h);
-	//	updateFrame();
+		updateFrame(); // resizable
 		drawPokemons(g);
 		drawGraph(g);
 		drawAgants(g);
@@ -139,7 +139,5 @@ public class MyFrame extends JFrame{
 		geo_location d0 = this._w2f.world2frame(d);
 		g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
 	}
-
-
 
 }
