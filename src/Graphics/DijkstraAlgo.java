@@ -45,7 +45,7 @@ public class DijkstraAlgo implements Runnable{
             FileWriter fileWriter = new FileWriter(f);
             fileWriter.write(g);
             fileWriter.close();
-            //game.login(this.tz);
+            game.login(this.tz);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -224,7 +224,7 @@ public class DijkstraAlgo implements Runnable{
 
         //Initialise the Best Pokemon For each Agent.
         wichBest(agent,pokeList,g);
-        System.out.println(agent.get_curr_fruit());
+
 
         int[] arr_help = fromListToInt(algo_g.shortestPath(agent.getSrcNode(), agent.get_curr_fruit().get_edge().getDest()));
 
@@ -362,7 +362,7 @@ public class DijkstraAlgo implements Runnable{
             int src_node = 0;  // arbitrary node, you should start at one of the pokemon
 
             ArrayList<Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
-            System.out.println("\nPokeList avant updateEdge: "+cl_fs+"\n");
+
 
             for(int a = 0;a<cl_fs.size();a++) {
 
@@ -372,7 +372,6 @@ public class DijkstraAlgo implements Runnable{
 
             }
 
-            System.out.println("\nPokeList apres updateEdge: "+cl_fs+"\n");
 
 
             for(int a = 0;a<rs;a++) {
