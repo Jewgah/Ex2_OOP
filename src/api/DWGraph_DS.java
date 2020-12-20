@@ -282,6 +282,13 @@ public class DWGraph_DS  implements directed_weighted_graph {
                 "}";
     }
 
+//    @Override
+//    public String toString() {
+//     ///renvoyer le json du graph
+//        return "";
+//    }
+
+
 
     public HashMap<Integer, HashMap<Integer, edge_data>> getHash_edges() {
         return hash_edges;

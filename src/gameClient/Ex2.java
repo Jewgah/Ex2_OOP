@@ -1,17 +1,6 @@
 package gameClient;
 import Graphics.LoginFrame;
-import Graphics.MyFrame;
-import Informations.Pokemon;
-import api.*;
-import Server.Game_Server_Ex2;
-import gameClient.util.Point3D;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
+import Graphics.DijkstraAlgo;
 
 
 public class Ex2 {
@@ -33,12 +22,12 @@ public class Ex2 {
                 scenario = 0;
             }
 
-            Thread client = new Thread(new MyFrame(id,scenario));
+            Thread client = new Thread(new DijkstraAlgo(id,scenario));
             client.start();
         }
 
         else { //else go to login frame
-            Thread client = new Thread(new LoginFrame());
+         Thread client = new Thread(new LoginFrame());
             client.start();
         }
     }
