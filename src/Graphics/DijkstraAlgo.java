@@ -53,26 +53,9 @@ public class DijkstraAlgo implements Runnable{
         dw_graph_algorithms ag = new DWGraph_Algo();
         ag.load("graph.json");
         directed_weighted_graph gg = ag.getGraph();
-   System.out.println("ce qu'on a: "+gg);
 
-
-///////////////////////////////////////////////////////
     //  directed_weighted_graph gg= game.getJava_Graph_Not_to_be_used();
 
-//        dw_graph_algorithms ag2 = new DWGraph_Algo();
-//        ag2.init(ggg);
-////
-//        System.out.println("\nce qu'on veut: "+ggg);
-//        ag2.save("graph2.json");
-
-////////////////////////////DEBUG//////////////////
-
-
-        // System.out.println("\n"+ggg.toString()+"\n\n"+ggg2.toString());
-//
-//        if(gg.toString().equals(ggg.toString())) System.out.println("\nles Strings Json sont egaux\n");
-//        else System.out.println("\nles Strings Json ne sont pas egaux\n");
-        /////////////////DEBUG/////////////////////////
 
 
         init(game,gg);
