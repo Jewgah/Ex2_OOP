@@ -1,7 +1,5 @@
 package Graphics;
 
-import gameClient.Ex2_Client;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -8,8 +8,6 @@ import com.google.gson.JsonObject;
 import java.io.*;
 import java.util.*;
 
-import static com.sun.org.apache.bcel.internal.classfile.Utility.printArray;
-
 public class DWGraph_Algo implements dw_graph_algorithms {
 
     private directed_weighted_graph DWgraph;
