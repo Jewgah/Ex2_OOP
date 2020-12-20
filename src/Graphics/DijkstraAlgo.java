@@ -9,9 +9,12 @@ import gameClient.CL_Pokemon;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
-import static gameClient.Arena.EPS2;
+import static gameClient.Arena.EPS1;
 import static gameClient.Arena.json2Pokemons;
 import static java.util.Arrays.copyOfRange;
 import static java.util.Arrays.parallelSetAll;
@@ -28,27 +31,56 @@ public class DijkstraAlgo implements Runnable{
 
     }
 
-    public static void main(String[] a) {
-//        Thread client = new Thread(new MyFrame());
-//        client.start();
-    }
-
     @Override
     public synchronized void run() {
         game_service game = Game_Server_Ex2.getServer(this.scenario); // you have [0,23] games
-        //int id = 999;
-        //game.login(this.tz)
 
-        String g = game.getGraph();
-        String pks = game.getPokemons();
-        directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
-        init(game);
+        //////////////////////////////////////////////
+        String g = game.getGraph(); //JSON String file representing the graph of a given scenario
+        //saving the Json file into a graph.json file
+        try {
+            File f = new File("graph.json");
+            FileWriter fileWriter = new FileWriter(f);
+            fileWriter.write(g);
+            fileWriter.close();
+            //game.login(this.tz);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //loading it into ag
+        dw_graph_algorithms ag = new DWGraph_Algo();
+        ag.load("graph.json");
+        directed_weighted_graph gg = ag.getGraph();
+   System.out.println("ce qu'on a: "+gg);
+
+
+///////////////////////////////////////////////////////
+    //  directed_weighted_graph gg= game.getJava_Graph_Not_to_be_used();
+
+//        dw_graph_algorithms ag2 = new DWGraph_Algo();
+//        ag2.init(ggg);
+////
+//        System.out.println("\nce qu'on veut: "+ggg);
+//        ag2.save("graph2.json");
+
+////////////////////////////DEBUG//////////////////
+
+
+        // System.out.println("\n"+ggg.toString()+"\n\n"+ggg2.toString());
+//
+//        if(gg.toString().equals(ggg.toString())) System.out.println("\nles Strings Json sont egaux\n");
+//        else System.out.println("\nles Strings Json ne sont pas egaux\n");
+        /////////////////DEBUG/////////////////////////
+
+
+        init(game,gg);
 
         game.startGame();
         _win.setTitle("POKEMON GAME by JORDAN PEREZ & NATHANAEL BENICHOU | Tz: "+tz+" | Scenario number: "+scenario+" ");
         int ind=0;
         long dt=100;
-
 
 
         while(game.isRunning()) {
@@ -63,6 +95,7 @@ public class DijkstraAlgo implements Runnable{
                 e.printStackTrace();
             }
         }
+
         String res = game.toString();
 
         System.out.println(res);
@@ -94,9 +127,7 @@ public class DijkstraAlgo implements Runnable{
             updateEdge(pokemon, gg);
         }
 
-
-        _ar.setPokemons(pokeList); // updates arena pokemons as pokelist
-
+                _ar.setPokemons(pokeList); // updates arena pokemons as pokelist
 
         //Init Pokemon as not Targeted
         for  (CL_Pokemon pokemon :pokeList) {
@@ -158,8 +189,6 @@ public class DijkstraAlgo implements Runnable{
         }
 
     }
-
-
 
 
     private static void PokePrint(List<CL_Pokemon> pokelist){
@@ -345,13 +374,16 @@ public class DijkstraAlgo implements Runnable{
 
     }
 
-    private void init(game_service game) {
-        String g = game.getGraph();
+    private void init(game_service game, directed_weighted_graph graph) {
+       // String g = game.getGraph();
         String fs = game.getPokemons();
-        directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
+       // directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
         //gg.init(g);
+
+
+
         _ar = new Arena();
-        _ar.setGraph(gg);
+        _ar.setGraph(graph);
         _ar.setPokemons(Arena.json2Pokemons(fs));
         _win = new gameClient.MyFrame("test Ex2");
         _win.setSize(1000, 700);
@@ -365,11 +397,25 @@ public class DijkstraAlgo implements Runnable{
             line = new JSONObject(info);
             JSONObject ttt = line.getJSONObject("GameServer");
             int rs = ttt.getInt("agents");
-            //System.out.println(info);
-            // System.out.println(game.getPokemons());
+          //  System.out.println(info);
+          //  System.out.println(game.getPokemons());
+
             int src_node = 0;  // arbitrary node, you should start at one of the pokemon
+
             ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
-            for(int a = 0;a<cl_fs.size();a++) { Arena.updateEdge(cl_fs.get(a),gg);}
+            System.out.println("\nPokeList avant updateEdge: "+cl_fs+"\n");
+
+            for(int a = 0;a<cl_fs.size();a++) {
+
+                CL_Pokemon myPokemon = cl_fs.get(a);
+                Arena.updateEdge(myPokemon,graph);
+
+
+            }
+
+            System.out.println("\nPokeList apres updateEdge: "+cl_fs+"\n");
+
+
             for(int a = 0;a<rs;a++) {
                 int ind = a%cl_fs.size();
                 CL_Pokemon c = cl_fs.get(ind);
@@ -386,7 +432,7 @@ public class DijkstraAlgo implements Runnable{
         boolean ans = false;
         double dist = src.distance(dest);
         double d1 = src.distance(p) + p.distance(dest);
-        if(dist>d1-EPS2) {ans = true;}
+        if(dist>d1-EPS1) {ans = true;}
         return ans;
     }
 }

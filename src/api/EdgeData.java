@@ -82,10 +82,9 @@ public class EdgeData implements edge_data{
 
     @Override
     public String toString() {
-        return "EdgeData{" +
-                "src=" + src +
-                ", w=" + w +
-                ", dest=" + dest +
+        return  "src:" + src +
+                ",w:" + w +
+                ",dest:" + dest +
                 '}';
     }
 

@@ -1,5 +1,8 @@
 package api;
 
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
+import org.json.JSONObject;
 import org.w3c.dom.Node;
 
 import java.util.Collection;
@@ -10,7 +13,6 @@ import java.util.Objects;
 public class DWGraph_DS  implements directed_weighted_graph {
 
     //CONSTRUCTOR :
-
     private HashMap<Integer, node_data> hash_graph; // Hashmap of all nodes in graph
     private HashMap<Integer,HashMap<Integer,edge_data>>   hash_edges; // Hashmap of all edges in graph
 
@@ -274,19 +276,43 @@ public class DWGraph_DS  implements directed_weighted_graph {
 
     @Override
     public String toString() {
-        return "Edges = " + hash_edges +
-                " nombre de edges = " + edges +
-                "}" +
-                "\nNodes = "+hash_graph +
-                " nombre de nodes = "+ nodeSize() +
+
+        return "{\"Edges\":" + convertEdgeMap(hash_edges) +
+                "," +
+                "\"Nodes\":"+ convertNodeMap(hash_graph) +
                 "}";
     }
 
-//    @Override
-//    public String toString() {
-//     ///renvoyer le json du graph
-//        return "";
-//    }
+    public String convertEdgeMap(HashMap<Integer, HashMap<Integer,edge_data>> map) {
+
+        StringBuilder mapAsString = new StringBuilder("[");
+
+        for (Integer key : map.keySet()) {
+            for (Integer key2: map.get(key).keySet()){
+
+                mapAsString.append("{\"src\":"+map.get(key).get(key2).getSrc() + ",\"w\":"+map.get(key).get(key2).getWeight()+",\"dest\":"+map.get(key).get(key2).getDest());
+                mapAsString.append("},");
+            }
+        }
+        mapAsString.delete(mapAsString.length()-2, mapAsString.length()).append("}]");
+        return mapAsString.toString();
+    }
+
+    public String convertNodeMap(HashMap<Integer, node_data> map) {
+
+        StringBuilder mapAsString = new StringBuilder("[");
+
+        for (Integer key : map.keySet()) {
+
+            mapAsString.append("{\"pos\":\""+map.get(key).getLocation()+"\",\"id\":"+key);
+
+                mapAsString.append("},");
+
+        }
+        mapAsString.delete(mapAsString.length()-2, mapAsString.length()).append("}]");
+        return mapAsString.toString();
+    }
+
 
 
 

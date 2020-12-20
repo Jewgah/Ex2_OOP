@@ -115,8 +115,8 @@ public class NodeData implements node_data {
     @Override
     public String toString() {
         return "{" +
-                "id=" + id +
-                ", pos=" + pos +
+                "id:" + id +
+                ",pos:" + pos +
        //         ", info=" + information + //for tests
                 '}';
     }

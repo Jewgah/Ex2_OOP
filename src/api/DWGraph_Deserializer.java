@@ -36,7 +36,6 @@ public class DWGraph_Deserializer implements JsonDeserializer<directed_weighted_
                 mygraph.connect(src, dest, weight);
             }
         }
-        System.out.println("\n\nmygraph in deserializer: "+mygraph+"\n\n");
         return mygraph;
     }
 }

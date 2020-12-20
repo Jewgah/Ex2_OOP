@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
-import static gameClient.Arena.EPS2;
+import static gameClient.Arena.EPS1;
 
 /**
  * This class represents a very simple GUI class to present a

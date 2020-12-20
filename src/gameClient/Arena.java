@@ -22,7 +22,7 @@ import java.util.List;
  *
  */
 public class Arena {
-	public static final double EPS1 = 0.001, EPS2=EPS1*EPS1, EPS=EPS2;
+	public static final double EPS1 = 0.000001; //EPS2=EPS1*EPS1, EPS=EPS2;
 	private directed_weighted_graph _gg;
 	private List<CL_Agent> _agents;
 	private List<CL_Pokemon> _pokemons;
@@ -136,7 +136,7 @@ public class Arena {
 		boolean ans = false;
 		double dist = src.distance(dest);
 		double d1 = src.distance(p) + p.distance(dest);
-		if(dist>d1-EPS2) {ans = true;}
+		if(dist>d1-EPS1) {ans = true;}
 		return ans;
 	}
 	private static boolean isOnEdge(geo_location p, int s, int d, directed_weighted_graph g) {
