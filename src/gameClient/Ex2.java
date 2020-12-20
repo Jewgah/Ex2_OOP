@@ -5,6 +5,7 @@ import Graphics.DijkstraAlgo;
 
 public class Ex2 {
 
+//The two args i want to Received.
 
     private static int id;
     private static int scenario;

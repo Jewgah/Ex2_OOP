@@ -1,10 +1,9 @@
 package gameClient;
 import api.edge_data;
-import api.node_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
-public class CL_Pokemon {
+public class Pokemon {
 
 	private edge_data _edge;
 	private double _value;
@@ -14,12 +13,13 @@ public class CL_Pokemon {
 	private Point3D _pos;
 	private double min_dist;
 	private int min_ro;
+	//I added a boolean to signified to my all other agent if my pokemon are already targeted by an other agent in the game.
 	private boolean targeted ;
 	private double distFromAgent;
 
 
 
-	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e, boolean targeted, double distFromAgent) {
+	public Pokemon(Point3D p, int t, double v, double s, edge_data e, boolean targeted, double distFromAgent) {
 		_type = t;
 		//	_speed = s;
 		_value = v;
@@ -31,8 +31,8 @@ public class CL_Pokemon {
 		targeted=false;
 		distFromAgent =0;
 	}
-	public static CL_Pokemon init_from_json(String json) {
-		CL_Pokemon ans = null;
+	public static Pokemon init_from_json(String json) {
+		Pokemon ans = null;
 		try {
 			JSONObject p = new JSONObject(json);
 			int id = p.getInt("id");

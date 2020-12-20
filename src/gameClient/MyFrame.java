@@ -13,8 +13,6 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
-import static gameClient.Arena.EPS1;
-
 /**
  * This class represents a very simple GUI class to present a
  * game on a graph - you are welcome to use this class - yet keep in mind
@@ -89,13 +87,13 @@ public class MyFrame extends JFrame{
 		}
 	}
 	private void drawPokemons(Graphics g) {
-		List<CL_Pokemon> fs = _ar.getPokemons();
+		List<Pokemon> fs = _ar.getPokemons();
 		if(fs!=null) {
-		Iterator<CL_Pokemon> itr = fs.iterator();
+		Iterator<Pokemon> itr = fs.iterator();
 
 		while(itr.hasNext()) {
 
-			CL_Pokemon f = itr.next();
+			Pokemon f = itr.next();
 			Point3D c = f.getLocation();
 			int r=10;
 			g.setColor(Color.green);
@@ -110,7 +108,7 @@ public class MyFrame extends JFrame{
 		}
 	}
 	private void drawAgants(Graphics g) {
-		List<CL_Agent> rs = _ar.getAgents();
+		List<Agent> rs = _ar.getAgents();
 	//	Iterator<OOP_Point3D> itr = rs.iterator();
 		g.setColor(Color.red);
 		int i=0;
