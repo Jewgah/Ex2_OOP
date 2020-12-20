@@ -4,6 +4,10 @@ Tz   :   342769130    &      336165733
 --------------------------------------
 
 
+Parti 1)
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
 Ex2 Contains 5 Implementations :
 ----------------------------------------------------------------------------------------------------------------------------------------
 1)NodeData     : Implementation of node_data.
@@ -374,6 +378,30 @@ _load                : To Copy My object Graph (Serialized) into a chosen File
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+Parti 2)
+----------------------------------------------------------------------------------------------------------------------------------------
+The Goal of this part is to Run the Ex2 contain in the util of gameClient and for each scenario using the algorithm we implemented in the part 1
+
+gameClient:  
+-----------
+
+Ex2        :  Calling LoginFrame if no argument are received.If ex2 Received args DijkstraAlgo is called.
+    
+
+                
+
+Graphics :
+----------
+
+_DijkstraAlgo : Use ShortPathDist in order to calculate a ratio ,in the method wichBest each Pokemon are attribute to an Agent;
+              : Run the Game Using gameclient.start
+              
+              
+LoginFrame     :  Revived two parameter ID and Scenario if the button Start Game are Pressed the game start calling DijkstraAlgo                 
+
+
 
 
 -----------------------------------------------------------------END README------------------------------------------------------------
